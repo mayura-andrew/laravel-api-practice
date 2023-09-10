@@ -8,6 +8,8 @@ use App\Models\Invocies;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\InvocieResource;
 use App\Http\Resources\V1\InvocieCollection;
+use App\Filters\V1\InvoicesFilter;
+use Illuminate\Http\Request;
 class InvociesController extends Controller
 {
     /**
@@ -15,11 +17,19 @@ class InvociesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request  $request)
     {
         //
+        $filter = new InvoicesFilter();
+        $queryItems = $filter->transform($request);
+       // return new CustomerCollection(Customer::paginate());
+       if(count($queryItems) == 0){
         return new InvocieCollection(Invocies::paginate());
+        }else{
+            $invocies = (Invocies::where($queryItems)->paginate());
 
+            return new InvocieCollection($invocies->appends($request->query()));
+        }
     }
 
     /**
