@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\Customer;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\CustomerResource;
@@ -10,6 +9,7 @@ use App\Http\Resources\V1\CustomerCollection;
 use App\Filters\V1\CustomerFilter;
 use Illuminate\Http\Request;
 use App\Http\Requests\V1\StoreCustomerRequest;
+use App\Http\Requests\V1\UpdateCustomerRequest;
 
 class CustomerController extends Controller
 {
@@ -18,7 +18,7 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request  $request)
+    public function index(Request $request)
     {
         //
         $filter = new CustomerFilter();
@@ -97,6 +97,7 @@ class CustomerController extends Controller
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
         //
+        $customer->update($request->all());
     }
 
     /**
